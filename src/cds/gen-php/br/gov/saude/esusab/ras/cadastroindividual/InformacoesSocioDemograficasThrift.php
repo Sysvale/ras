@@ -114,6 +114,11 @@ class InformacoesSocioDemograficasThrift
                 'type' => TType::I64,
                 ),
         ),
+        20 => array(
+            'var' => 'coPovoComunidadeTradicional',
+            'isRequired' => false,
+            'type' => TType::I64,
+        ),
     );
 
     /**
@@ -184,6 +189,10 @@ class InformacoesSocioDemograficasThrift
      * @var int[]
      */
     public $responsavelPorCrianca = null;
+    /**
+     * @var int
+     */
+    public $coPovoComunidadeTradicional = null;
 
     public function __construct($vals = null)
     {
@@ -238,6 +247,9 @@ class InformacoesSocioDemograficasThrift
             }
             if (isset($vals['responsavelPorCrianca'])) {
                 $this->responsavelPorCrianca = $vals['responsavelPorCrianca'];
+            }
+            if (isset($vals['coPovoComunidadeTradicional'])) {
+                $this->coPovoComunidadeTradicional = $vals['coPovoComunidadeTradicional'];
             }
         }
     }
@@ -398,6 +410,13 @@ class InformacoesSocioDemograficasThrift
                         $xfer += $input->skip($ftype);
                     }
                     break;
+                case 20:
+                    if ($ftype == TType::I64) {
+                        $xfer += $input->readI64($this->coPovoComunidadeTradicional);
+                    } else {
+                        $xfer += $input->skip($ftype);
+                    }
+                    break;
                 default:
                     $xfer += $input->skip($ftype);
                     break;
@@ -509,6 +528,11 @@ class InformacoesSocioDemograficasThrift
                 $xfer += $output->writeI64($iter48);
             }
             $output->writeListEnd();
+            $xfer += $output->writeFieldEnd();
+        }
+        if ($this->coPovoComunidadeTradicional !== null) {
+            $xfer += $output->writeFieldBegin('coPovoComunidadeTradicional', TType::I64, 20);
+            $xfer += $output->writeI64($this->coPovoComunidadeTradicional);
             $xfer += $output->writeFieldEnd();
         }
         $xfer += $output->writeFieldStop();
