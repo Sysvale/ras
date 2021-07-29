@@ -195,6 +195,16 @@ class FichaAtendimentoIndividualChildThrift
                 'class' => '\br\gov\saude\esusab\ras\common\EncaminhamentoExternoThrift',
                 ),
         ),
+        33 => array(
+            'var' => 'resultadosExames',
+            'isRequired' => false,
+            'type' => TType::LST,
+            'etype' => TType::STRUCT,
+            'elem' => array(
+                'type' => TType::STRUCT,
+                'class' => '\br\gov\saude\esusab\ras\common\ResultadosExameThrift',
+                ),
+        ),
     );
 
     /**
@@ -317,6 +327,10 @@ class FichaAtendimentoIndividualChildThrift
      * @var \br\gov\saude\esusab\ras\common\EncaminhamentoExternoThrift[]
      */
     public $encaminhamentos = null;
+    /**
+     * @var \br\gov\saude\esusab\ras\common\ResultadosExameThrift[]
+     */
+    public $resultadosExames = null;
 
     public function __construct($vals = null)
     {
@@ -410,6 +424,9 @@ class FichaAtendimentoIndividualChildThrift
             }
             if (isset($vals['encaminhamentos'])) {
                 $this->encaminhamentos = $vals['encaminhamentos'];
+            }
+            if (isset($vals['resultadosExames'])) {
+                $this->resultadosExames = $vals['resultadosExames'];
             }
         }
     }
@@ -692,6 +709,23 @@ class FichaAtendimentoIndividualChildThrift
                         $xfer += $input->skip($ftype);
                     }
                     break;
+                case 33:
+                    if ($ftype == TType::LST) {
+                        $this->resultadosExames = array();
+                        $_size44 = 0;
+                        $_etype47 = 0;
+                        $xfer += $input->readListBegin($_etype47, $_size44);
+                        for ($_i48 = 0; $_i48 < $_size44; ++$_i48) {
+                            $elem49 = null;
+                            $elem49 = new \br\gov\saude\esusab\ras\common\ResultadosExameThrift();
+                            $xfer += $elem49->read($input);
+                            $this->resultadosExames []= $elem49;
+                        }
+                        $xfer += $input->readListEnd();
+                    } else {
+                        $xfer += $input->skip($ftype);
+                    }
+                    break;
                 default:
                     $xfer += $input->skip($ftype);
                     break;
@@ -785,8 +819,8 @@ class FichaAtendimentoIndividualChildThrift
             }
             $xfer += $output->writeFieldBegin('exame', TType::LST, 17);
             $output->writeListBegin(TType::STRUCT, count($this->exame));
-            foreach ($this->exame as $iter44) {
-                $xfer += $iter44->write($output);
+            foreach ($this->exame as $iter50) {
+                $xfer += $iter50->write($output);
             }
             $output->writeListEnd();
             $xfer += $output->writeFieldEnd();
@@ -812,8 +846,8 @@ class FichaAtendimentoIndividualChildThrift
             }
             $xfer += $output->writeFieldBegin('nasfs', TType::LST, 21);
             $output->writeListBegin(TType::I64, count($this->nasfs));
-            foreach ($this->nasfs as $iter45) {
-                $xfer += $output->writeI64($iter45);
+            foreach ($this->nasfs as $iter51) {
+                $xfer += $output->writeI64($iter51);
             }
             $output->writeListEnd();
             $xfer += $output->writeFieldEnd();
@@ -824,8 +858,8 @@ class FichaAtendimentoIndividualChildThrift
             }
             $xfer += $output->writeFieldBegin('condutas', TType::LST, 22);
             $output->writeListBegin(TType::I64, count($this->condutas));
-            foreach ($this->condutas as $iter46) {
-                $xfer += $output->writeI64($iter46);
+            foreach ($this->condutas as $iter52) {
+                $xfer += $output->writeI64($iter52);
             }
             $output->writeListEnd();
             $xfer += $output->writeFieldEnd();
@@ -876,8 +910,8 @@ class FichaAtendimentoIndividualChildThrift
             }
             $xfer += $output->writeFieldBegin('medicamentos', TType::LST, 31);
             $output->writeListBegin(TType::STRUCT, count($this->medicamentos));
-            foreach ($this->medicamentos as $iter47) {
-                $xfer += $iter47->write($output);
+            foreach ($this->medicamentos as $iter53) {
+                $xfer += $iter53->write($output);
             }
             $output->writeListEnd();
             $xfer += $output->writeFieldEnd();
@@ -888,8 +922,20 @@ class FichaAtendimentoIndividualChildThrift
             }
             $xfer += $output->writeFieldBegin('encaminhamentos', TType::LST, 32);
             $output->writeListBegin(TType::STRUCT, count($this->encaminhamentos));
-            foreach ($this->encaminhamentos as $iter48) {
-                $xfer += $iter48->write($output);
+            foreach ($this->encaminhamentos as $iter54) {
+                $xfer += $iter54->write($output);
+            }
+            $output->writeListEnd();
+            $xfer += $output->writeFieldEnd();
+        }
+        if ($this->resultadosExames !== null) {
+            if (!is_array($this->resultadosExames)) {
+                throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+            }
+            $xfer += $output->writeFieldBegin('resultadosExames', TType::LST, 33);
+            $output->writeListBegin(TType::STRUCT, count($this->resultadosExames));
+            foreach ($this->resultadosExames as $iter55) {
+                $xfer += $iter55->write($output);
             }
             $output->writeListEnd();
             $xfer += $output->writeFieldEnd();
