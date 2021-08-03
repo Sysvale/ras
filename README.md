@@ -10,7 +10,7 @@ A estrutura RAS (Registro de Atendimento Simplificado) é baseada em um conjunto
 Coloque no `composer.json`:
 
 ``` json
-"sysvale/ras": "v0.5.x"
+"sysvale/ras": "1.1.x"
 ```
 
 depois rode o `composer update`
