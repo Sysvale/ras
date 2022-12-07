@@ -19,7 +19,8 @@
 	"autoload": {
 		"psr-4": {
 			"Thrift\\": "src/thrift",
-			"br\\": ["src/cds/gen-php/br", "src/transport/gen-php/br"]
+			"br\\": ["src/cds/gen-php/br", "src/transport/gen-php/br"],
+			"br\\gov\\saude\\esusab\\ras\\": "src/cidadao/gen-php"
 		}
 	}
 }
