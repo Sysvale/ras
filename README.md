@@ -10,7 +10,12 @@ A estrutura RAS (Registro de Atendimento Simplificado) é baseada em um conjunto
 Coloque no `composer.json`:
 
 ``` json
-"sysvale/ras": "v0.5.x"
+"sysvale/ras": "1.2.x"
 ```
 
 depois rode o `composer update`
+
+## Gerar classes php
+
+- Realize o build a imagem `docker build -t thrift:0.14.1 -f .docker/.`
+- Execute o script em `bin/update_thrift_files.sh`
