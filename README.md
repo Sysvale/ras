@@ -14,3 +14,8 @@ Coloque no `composer.json`:
 ```
 
 depois rode o `composer update`
+
+## Gerar classes php
+
+- Realize o build a imagem `docker build -t thrift:0.14.1 -f .docker/.`
+- Execute o script em `bin/update_thrift_files.sh`
