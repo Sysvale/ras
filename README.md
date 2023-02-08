@@ -17,5 +17,5 @@ depois rode o `composer update`
 
 ## Gerar classes php
 
-- Realize o build a imagem `docker build -t thrift:0.14.1 -f .docker/.`
+- Realize o build a imagem `docker build -t sysvale-thrift:0.17.0 -f .docker/.`
 - Execute o script em `bin/update_thrift_files.sh`
