@@ -16,23 +16,23 @@ use Thrift\Protocol\TProtocol;
 use Thrift\Protocol\TBinaryProtocolAccelerated;
 use Thrift\Exception\TApplicationException;
 
-class UnicaLotacaoHeaderThrift
+class LotacaoThrift
 {
     static public $isValidate = false;
 
     static public $_TSPEC = array(
         1 => array(
-            'var' => 'profissionalCNS',
+            'var' => 'cpf',
             'isRequired' => false,
             'type' => TType::STRING,
         ),
         2 => array(
-            'var' => 'cboCodigo_2002',
+            'var' => 'cns',
             'isRequired' => false,
             'type' => TType::STRING,
         ),
         3 => array(
-            'var' => 'cnes',
+            'var' => 'cboCodigo_2002',
             'isRequired' => false,
             'type' => TType::STRING,
         ),
@@ -42,9 +42,9 @@ class UnicaLotacaoHeaderThrift
             'type' => TType::STRING,
         ),
         5 => array(
-            'var' => 'dataAtendimento',
+            'var' => 'cnes',
             'isRequired' => false,
-            'type' => TType::I64,
+            'type' => TType::STRING,
         ),
         6 => array(
             'var' => 'codigoIbgeMunicipio',
@@ -56,7 +56,11 @@ class UnicaLotacaoHeaderThrift
     /**
      * @var string
      */
-    public $profissionalCNS = null;
+    public $cpf = null;
+    /**
+     * @var string
+     */
+    public $cns = null;
     /**
      * @var string
      */
@@ -64,15 +68,11 @@ class UnicaLotacaoHeaderThrift
     /**
      * @var string
      */
-    public $cnes = null;
+    public $ine = null;
     /**
      * @var string
      */
-    public $ine = null;
-    /**
-     * @var int
-     */
-    public $dataAtendimento = null;
+    public $cnes = null;
     /**
      * @var string
      */
@@ -81,20 +81,20 @@ class UnicaLotacaoHeaderThrift
     public function __construct($vals = null)
     {
         if (is_array($vals)) {
-            if (isset($vals['profissionalCNS'])) {
-                $this->profissionalCNS = $vals['profissionalCNS'];
+            if (isset($vals['cpf'])) {
+                $this->cpf = $vals['cpf'];
+            }
+            if (isset($vals['cns'])) {
+                $this->cns = $vals['cns'];
             }
             if (isset($vals['cboCodigo_2002'])) {
                 $this->cboCodigo_2002 = $vals['cboCodigo_2002'];
             }
-            if (isset($vals['cnes'])) {
-                $this->cnes = $vals['cnes'];
-            }
             if (isset($vals['ine'])) {
                 $this->ine = $vals['ine'];
             }
-            if (isset($vals['dataAtendimento'])) {
-                $this->dataAtendimento = $vals['dataAtendimento'];
+            if (isset($vals['cnes'])) {
+                $this->cnes = $vals['cnes'];
             }
             if (isset($vals['codigoIbgeMunicipio'])) {
                 $this->codigoIbgeMunicipio = $vals['codigoIbgeMunicipio'];
@@ -104,7 +104,7 @@ class UnicaLotacaoHeaderThrift
 
     public function getName()
     {
-        return 'UnicaLotacaoHeaderThrift';
+        return 'LotacaoThrift';
     }
 
 
@@ -123,21 +123,21 @@ class UnicaLotacaoHeaderThrift
             switch ($fid) {
                 case 1:
                     if ($ftype == TType::STRING) {
-                        $xfer += $input->readString($this->profissionalCNS);
+                        $xfer += $input->readString($this->cpf);
                     } else {
                         $xfer += $input->skip($ftype);
                     }
                     break;
                 case 2:
                     if ($ftype == TType::STRING) {
-                        $xfer += $input->readString($this->cboCodigo_2002);
+                        $xfer += $input->readString($this->cns);
                     } else {
                         $xfer += $input->skip($ftype);
                     }
                     break;
                 case 3:
                     if ($ftype == TType::STRING) {
-                        $xfer += $input->readString($this->cnes);
+                        $xfer += $input->readString($this->cboCodigo_2002);
                     } else {
                         $xfer += $input->skip($ftype);
                     }
@@ -150,8 +150,8 @@ class UnicaLotacaoHeaderThrift
                     }
                     break;
                 case 5:
-                    if ($ftype == TType::I64) {
-                        $xfer += $input->readI64($this->dataAtendimento);
+                    if ($ftype == TType::STRING) {
+                        $xfer += $input->readString($this->cnes);
                     } else {
                         $xfer += $input->skip($ftype);
                     }
@@ -176,20 +176,20 @@ class UnicaLotacaoHeaderThrift
     public function write($output)
     {
         $xfer = 0;
-        $xfer += $output->writeStructBegin('UnicaLotacaoHeaderThrift');
-        if ($this->profissionalCNS !== null) {
-            $xfer += $output->writeFieldBegin('profissionalCNS', TType::STRING, 1);
-            $xfer += $output->writeString($this->profissionalCNS);
+        $xfer += $output->writeStructBegin('LotacaoThrift');
+        if ($this->cpf !== null) {
+            $xfer += $output->writeFieldBegin('cpf', TType::STRING, 1);
+            $xfer += $output->writeString($this->cpf);
+            $xfer += $output->writeFieldEnd();
+        }
+        if ($this->cns !== null) {
+            $xfer += $output->writeFieldBegin('cns', TType::STRING, 2);
+            $xfer += $output->writeString($this->cns);
             $xfer += $output->writeFieldEnd();
         }
         if ($this->cboCodigo_2002 !== null) {
-            $xfer += $output->writeFieldBegin('cboCodigo_2002', TType::STRING, 2);
+            $xfer += $output->writeFieldBegin('cboCodigo_2002', TType::STRING, 3);
             $xfer += $output->writeString($this->cboCodigo_2002);
-            $xfer += $output->writeFieldEnd();
-        }
-        if ($this->cnes !== null) {
-            $xfer += $output->writeFieldBegin('cnes', TType::STRING, 3);
-            $xfer += $output->writeString($this->cnes);
             $xfer += $output->writeFieldEnd();
         }
         if ($this->ine !== null) {
@@ -197,9 +197,9 @@ class UnicaLotacaoHeaderThrift
             $xfer += $output->writeString($this->ine);
             $xfer += $output->writeFieldEnd();
         }
-        if ($this->dataAtendimento !== null) {
-            $xfer += $output->writeFieldBegin('dataAtendimento', TType::I64, 5);
-            $xfer += $output->writeI64($this->dataAtendimento);
+        if ($this->cnes !== null) {
+            $xfer += $output->writeFieldBegin('cnes', TType::STRING, 5);
+            $xfer += $output->writeString($this->cnes);
             $xfer += $output->writeFieldEnd();
         }
         if ($this->codigoIbgeMunicipio !== null) {

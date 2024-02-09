@@ -1,6 +1,6 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
-LABEL Author="Elayne Lemos elayne.lemos@sysvale.com"
+LABEL Author="Sysvale operations@sysvale.com"
 
 # Image ENV variables
 ENV PATH ${PATH}:/usr/local/bin:/usr/local/sbin:/usr/bin:/sbin:/bin:/usr/sbin
@@ -26,9 +26,10 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
   libtool \
   make \
   pkg-config \
-  wget \
-  && wget https://downloads.apache.org/thrift/0.17.0/thrift-0.17.0.tar.gz --no-check-certificate \
-  && tar -xvf thrift-0.17.0.tar.gz && cd thrift-0.17.0 \
+  wget
+
+RUN wget https://downloads.apache.org/thrift/0.19.0/thrift-0.19.0.tar.gz --no-check-certificate \
+  && tar -xvf thrift-0.19.0.tar.gz && cd thrift-0.19.0 \
   && ./bootstrap.sh \
   && ./configure --bindir=/usr/local/bin \
   && make && make install  && cd /tmp \

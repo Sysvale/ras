@@ -20,7 +20,7 @@ do
 	for FILE in storage/esusab/thrift/${layouts[$i]}/thrift/*.thrift
 	do
 		mkdir -p src/${mapped_directories[$i]}
-		docker run -v "$PWD:$(pwd)" thrift:0.14.1 thrift -o "$(pwd)/src/${mapped_directories[$i]}" --gen php -v $(pwd)/$FILE
+		docker run -v "$PWD:$(pwd)" thrift:0.19.0 thrift -o "$(pwd)/src/${mapped_directories[$i]}" --gen php -v $(pwd)/$FILE
 	done
 done
 
