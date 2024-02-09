@@ -1,6 +1,10 @@
 #!/bin/bash
 git clone https://github.com/laboratoriobridge/esusab-integracao storage/esusab || true
 
+if ! grep "namespace php br.gov.saude.esus.thrift.definition.cidadao" storage/esusab/thrift/layout-cidadao/thrift/cidadao_transport.thrift ; then
+	sed -i '1s/^/namespace php br.gov.saude.esus.thrift.definition.cidadao\n/' storage/esusab/thrift/layout-cidadao/thrift/cidadao_transport.thrift
+fi
+
 layouts=(
 	'layout-camada-transport'
 	'layout-ras'
