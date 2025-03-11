@@ -65,16 +65,6 @@ class FichaAtendimentoDomiciliarChildThrift
                 'type' => TType::I64,
                 ),
         ),
-        9 => array(
-            'var' => 'cid',
-            'isRequired' => false,
-            'type' => TType::STRING,
-        ),
-        10 => array(
-            'var' => 'ciap',
-            'isRequired' => false,
-            'type' => TType::STRING,
-        ),
         11 => array(
             'var' => 'procedimentos',
             'isRequired' => false,
@@ -93,6 +83,16 @@ class FichaAtendimentoDomiciliarChildThrift
             'var' => 'cpfCidadao',
             'isRequired' => false,
             'type' => TType::STRING,
+        ),
+        16 => array(
+            'var' => 'problemasCondicoes',
+            'isRequired' => false,
+            'type' => TType::LST,
+            'etype' => TType::STRUCT,
+            'elem' => array(
+                'type' => TType::STRUCT,
+                'class' => '\br\gov\saude\esusab\ras\common\ProblemaCondicaoThrift',
+                ),
         ),
     );
 
@@ -129,14 +129,6 @@ class FichaAtendimentoDomiciliarChildThrift
      */
     public $condicoesAvaliadas = null;
     /**
-     * @var string
-     */
-    public $cid = null;
-    /**
-     * @var string
-     */
-    public $ciap = null;
-    /**
      * @var string[]
      */
     public $procedimentos = null;
@@ -148,6 +140,10 @@ class FichaAtendimentoDomiciliarChildThrift
      * @var string
      */
     public $cpfCidadao = null;
+    /**
+     * @var \br\gov\saude\esusab\ras\common\ProblemaCondicaoThrift[]
+     */
+    public $problemasCondicoes = null;
 
     public function __construct($vals = null)
     {
@@ -176,12 +172,6 @@ class FichaAtendimentoDomiciliarChildThrift
             if (isset($vals['condicoesAvaliadas'])) {
                 $this->condicoesAvaliadas = $vals['condicoesAvaliadas'];
             }
-            if (isset($vals['cid'])) {
-                $this->cid = $vals['cid'];
-            }
-            if (isset($vals['ciap'])) {
-                $this->ciap = $vals['ciap'];
-            }
             if (isset($vals['procedimentos'])) {
                 $this->procedimentos = $vals['procedimentos'];
             }
@@ -190,6 +180,9 @@ class FichaAtendimentoDomiciliarChildThrift
             }
             if (isset($vals['cpfCidadao'])) {
                 $this->cpfCidadao = $vals['cpfCidadao'];
+            }
+            if (isset($vals['problemasCondicoes'])) {
+                $this->problemasCondicoes = $vals['problemasCondicoes'];
             }
         }
     }
@@ -278,20 +271,6 @@ class FichaAtendimentoDomiciliarChildThrift
                         $xfer += $input->skip($ftype);
                     }
                     break;
-                case 9:
-                    if ($ftype == TType::STRING) {
-                        $xfer += $input->readString($this->cid);
-                    } else {
-                        $xfer += $input->skip($ftype);
-                    }
-                    break;
-                case 10:
-                    if ($ftype == TType::STRING) {
-                        $xfer += $input->readString($this->ciap);
-                    } else {
-                        $xfer += $input->skip($ftype);
-                    }
-                    break;
                 case 11:
                     if ($ftype == TType::LST) {
                         $this->procedimentos = array();
@@ -318,6 +297,23 @@ class FichaAtendimentoDomiciliarChildThrift
                 case 15:
                     if ($ftype == TType::STRING) {
                         $xfer += $input->readString($this->cpfCidadao);
+                    } else {
+                        $xfer += $input->skip($ftype);
+                    }
+                    break;
+                case 16:
+                    if ($ftype == TType::LST) {
+                        $this->problemasCondicoes = array();
+                        $_size12 = 0;
+                        $_etype15 = 0;
+                        $xfer += $input->readListBegin($_etype15, $_size12);
+                        for ($_i16 = 0; $_i16 < $_size12; ++$_i16) {
+                            $elem17 = null;
+                            $elem17 = new \br\gov\saude\esusab\ras\common\ProblemaCondicaoThrift();
+                            $xfer += $elem17->read($input);
+                            $this->problemasCondicoes []= $elem17;
+                        }
+                        $xfer += $input->readListEnd();
                     } else {
                         $xfer += $input->skip($ftype);
                     }
@@ -377,20 +373,10 @@ class FichaAtendimentoDomiciliarChildThrift
             }
             $xfer += $output->writeFieldBegin('condicoesAvaliadas', TType::LST, 8);
             $output->writeListBegin(TType::I64, count($this->condicoesAvaliadas));
-            foreach ($this->condicoesAvaliadas as $iter12) {
-                $xfer += $output->writeI64($iter12);
+            foreach ($this->condicoesAvaliadas as $iter18) {
+                $xfer += $output->writeI64($iter18);
             }
             $output->writeListEnd();
-            $xfer += $output->writeFieldEnd();
-        }
-        if ($this->cid !== null) {
-            $xfer += $output->writeFieldBegin('cid', TType::STRING, 9);
-            $xfer += $output->writeString($this->cid);
-            $xfer += $output->writeFieldEnd();
-        }
-        if ($this->ciap !== null) {
-            $xfer += $output->writeFieldBegin('ciap', TType::STRING, 10);
-            $xfer += $output->writeString($this->ciap);
             $xfer += $output->writeFieldEnd();
         }
         if ($this->procedimentos !== null) {
@@ -399,8 +385,8 @@ class FichaAtendimentoDomiciliarChildThrift
             }
             $xfer += $output->writeFieldBegin('procedimentos', TType::LST, 11);
             $output->writeListBegin(TType::STRING, count($this->procedimentos));
-            foreach ($this->procedimentos as $iter13) {
-                $xfer += $output->writeString($iter13);
+            foreach ($this->procedimentos as $iter19) {
+                $xfer += $output->writeString($iter19);
             }
             $output->writeListEnd();
             $xfer += $output->writeFieldEnd();
@@ -413,6 +399,18 @@ class FichaAtendimentoDomiciliarChildThrift
         if ($this->cpfCidadao !== null) {
             $xfer += $output->writeFieldBegin('cpfCidadao', TType::STRING, 15);
             $xfer += $output->writeString($this->cpfCidadao);
+            $xfer += $output->writeFieldEnd();
+        }
+        if ($this->problemasCondicoes !== null) {
+            if (!is_array($this->problemasCondicoes)) {
+                throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+            }
+            $xfer += $output->writeFieldBegin('problemasCondicoes', TType::LST, 16);
+            $output->writeListBegin(TType::STRUCT, count($this->problemasCondicoes));
+            foreach ($this->problemasCondicoes as $iter20) {
+                $xfer += $iter20->write($output);
+            }
+            $output->writeListEnd();
             $xfer += $output->writeFieldEnd();
         }
         $xfer += $output->writeFieldStop();
