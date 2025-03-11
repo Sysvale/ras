@@ -70,11 +70,6 @@ class CadastroIndividualThrift
             'isRequired' => false,
             'type' => TType::STRING,
         ),
-        11 => array(
-            'var' => 'uuidCidadao',
-            'isRequired' => false,
-            'type' => TType::STRING,
-        ),
         12 => array(
             'var' => 'saidaCidadaoCadastro',
             'isRequired' => false,
@@ -86,16 +81,6 @@ class CadastroIndividualThrift
             'isRequired' => false,
             'type' => TType::STRUCT,
             'class' => '\br\gov\saude\esusab\ras\common\UnicaLotacaoHeaderThrift',
-        ),
-        14 => array(
-            'var' => 'statusCadastroIndividualInativo',
-            'isRequired' => false,
-            'type' => TType::BOOL,
-        ),
-        15 => array(
-            'var' => 'statusGeradoAutomaticamente',
-            'isRequired' => false,
-            'type' => TType::BOOL,
         ),
         16 => array(
             'var' => 'informacoesSocioEconomicas',
@@ -142,10 +127,6 @@ class CadastroIndividualThrift
      */
     public $uuidFichaOriginadora = null;
     /**
-     * @var string
-     */
-    public $uuidCidadao = null;
-    /**
      * @var \br\gov\saude\esusab\ras\cadastroindividual\SaidaCidadaoCadastroThrift
      */
     public $saidaCidadaoCadastro = null;
@@ -153,14 +134,6 @@ class CadastroIndividualThrift
      * @var \br\gov\saude\esusab\ras\common\UnicaLotacaoHeaderThrift
      */
     public $headerTransport = null;
-    /**
-     * @var bool
-     */
-    public $statusCadastroIndividualInativo = null;
-    /**
-     * @var bool
-     */
-    public $statusGeradoAutomaticamente = null;
     /**
      * @var \br\gov\saude\esusab\ras\cadastroindividual\InformacoesSocioEconomicasThrift
      */
@@ -196,20 +169,11 @@ class CadastroIndividualThrift
             if (isset($vals['uuidFichaOriginadora'])) {
                 $this->uuidFichaOriginadora = $vals['uuidFichaOriginadora'];
             }
-            if (isset($vals['uuidCidadao'])) {
-                $this->uuidCidadao = $vals['uuidCidadao'];
-            }
             if (isset($vals['saidaCidadaoCadastro'])) {
                 $this->saidaCidadaoCadastro = $vals['saidaCidadaoCadastro'];
             }
             if (isset($vals['headerTransport'])) {
                 $this->headerTransport = $vals['headerTransport'];
-            }
-            if (isset($vals['statusCadastroIndividualInativo'])) {
-                $this->statusCadastroIndividualInativo = $vals['statusCadastroIndividualInativo'];
-            }
-            if (isset($vals['statusGeradoAutomaticamente'])) {
-                $this->statusGeradoAutomaticamente = $vals['statusGeradoAutomaticamente'];
             }
             if (isset($vals['informacoesSocioEconomicas'])) {
                 $this->informacoesSocioEconomicas = $vals['informacoesSocioEconomicas'];
@@ -303,13 +267,6 @@ class CadastroIndividualThrift
                         $xfer += $input->skip($ftype);
                     }
                     break;
-                case 11:
-                    if ($ftype == TType::STRING) {
-                        $xfer += $input->readString($this->uuidCidadao);
-                    } else {
-                        $xfer += $input->skip($ftype);
-                    }
-                    break;
                 case 12:
                     if ($ftype == TType::STRUCT) {
                         $this->saidaCidadaoCadastro = new \br\gov\saude\esusab\ras\cadastroindividual\SaidaCidadaoCadastroThrift();
@@ -322,20 +279,6 @@ class CadastroIndividualThrift
                     if ($ftype == TType::STRUCT) {
                         $this->headerTransport = new \br\gov\saude\esusab\ras\common\UnicaLotacaoHeaderThrift();
                         $xfer += $this->headerTransport->read($input);
-                    } else {
-                        $xfer += $input->skip($ftype);
-                    }
-                    break;
-                case 14:
-                    if ($ftype == TType::BOOL) {
-                        $xfer += $input->readBool($this->statusCadastroIndividualInativo);
-                    } else {
-                        $xfer += $input->skip($ftype);
-                    }
-                    break;
-                case 15:
-                    if ($ftype == TType::BOOL) {
-                        $xfer += $input->readBool($this->statusGeradoAutomaticamente);
                     } else {
                         $xfer += $input->skip($ftype);
                     }
@@ -419,11 +362,6 @@ class CadastroIndividualThrift
             $xfer += $output->writeString($this->uuidFichaOriginadora);
             $xfer += $output->writeFieldEnd();
         }
-        if ($this->uuidCidadao !== null) {
-            $xfer += $output->writeFieldBegin('uuidCidadao', TType::STRING, 11);
-            $xfer += $output->writeString($this->uuidCidadao);
-            $xfer += $output->writeFieldEnd();
-        }
         if ($this->saidaCidadaoCadastro !== null) {
             if (!is_object($this->saidaCidadaoCadastro)) {
                 throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
@@ -438,16 +376,6 @@ class CadastroIndividualThrift
             }
             $xfer += $output->writeFieldBegin('headerTransport', TType::STRUCT, 13);
             $xfer += $this->headerTransport->write($output);
-            $xfer += $output->writeFieldEnd();
-        }
-        if ($this->statusCadastroIndividualInativo !== null) {
-            $xfer += $output->writeFieldBegin('statusCadastroIndividualInativo', TType::BOOL, 14);
-            $xfer += $output->writeBool($this->statusCadastroIndividualInativo);
-            $xfer += $output->writeFieldEnd();
-        }
-        if ($this->statusGeradoAutomaticamente !== null) {
-            $xfer += $output->writeFieldBegin('statusGeradoAutomaticamente', TType::BOOL, 15);
-            $xfer += $output->writeBool($this->statusGeradoAutomaticamente);
             $xfer += $output->writeFieldEnd();
         }
         if ($this->informacoesSocioEconomicas !== null) {

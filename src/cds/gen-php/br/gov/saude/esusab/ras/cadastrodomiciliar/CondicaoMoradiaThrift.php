@@ -86,6 +86,11 @@ class CondicaoMoradiaThrift
             'isRequired' => false,
             'type' => TType::I64,
         ),
+        14 => array(
+            'var' => 'tipoOrigemEnergiaEletrica',
+            'isRequired' => false,
+            'type' => TType::I64,
+        ),
     );
 
     /**
@@ -140,6 +145,10 @@ class CondicaoMoradiaThrift
      * @var int
      */
     public $aguaConsumoDomicilio = null;
+    /**
+     * @var int
+     */
+    public $tipoOrigemEnergiaEletrica = null;
 
     public function __construct($vals = null)
     {
@@ -182,6 +191,9 @@ class CondicaoMoradiaThrift
             }
             if (isset($vals['aguaConsumoDomicilio'])) {
                 $this->aguaConsumoDomicilio = $vals['aguaConsumoDomicilio'];
+            }
+            if (isset($vals['tipoOrigemEnergiaEletrica'])) {
+                $this->tipoOrigemEnergiaEletrica = $vals['tipoOrigemEnergiaEletrica'];
             }
         }
     }
@@ -296,6 +308,13 @@ class CondicaoMoradiaThrift
                         $xfer += $input->skip($ftype);
                     }
                     break;
+                case 14:
+                    if ($ftype == TType::I64) {
+                        $xfer += $input->readI64($this->tipoOrigemEnergiaEletrica);
+                    } else {
+                        $xfer += $input->skip($ftype);
+                    }
+                    break;
                 default:
                     $xfer += $input->skip($ftype);
                     break;
@@ -373,6 +392,11 @@ class CondicaoMoradiaThrift
         if ($this->aguaConsumoDomicilio !== null) {
             $xfer += $output->writeFieldBegin('aguaConsumoDomicilio', TType::I64, 13);
             $xfer += $output->writeI64($this->aguaConsumoDomicilio);
+            $xfer += $output->writeFieldEnd();
+        }
+        if ($this->tipoOrigemEnergiaEletrica !== null) {
+            $xfer += $output->writeFieldBegin('tipoOrigemEnergiaEletrica', TType::I64, 14);
+            $xfer += $output->writeI64($this->tipoOrigemEnergiaEletrica);
             $xfer += $output->writeFieldEnd();
         }
         $xfer += $output->writeFieldStop();

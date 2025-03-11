@@ -80,15 +80,17 @@ class FichaProcedimentoChildThrift
             'isRequired' => false,
             'type' => TType::STRING,
         ),
-        13 => array(
-            'var' => 'pesoAcompanhamentoNutricional',
+        16 => array(
+            'var' => 'medicoes',
             'isRequired' => false,
-            'type' => TType::DOUBLE,
+            'type' => TType::STRUCT,
+            'class' => '\br\gov\saude\esusab\ras\common\MedicoesThrift',
         ),
-        14 => array(
-            'var' => 'alturaAcompanhamentoNutricional',
+        17 => array(
+            'var' => 'ivcf',
             'isRequired' => false,
-            'type' => TType::DOUBLE,
+            'type' => TType::STRUCT,
+            'class' => '\br\gov\saude\esusab\ras\common\IvcfThrift',
         ),
     );
 
@@ -137,13 +139,13 @@ class FichaProcedimentoChildThrift
      */
     public $cpfCidadao = null;
     /**
-     * @var double
+     * @var \br\gov\saude\esusab\ras\common\MedicoesThrift
      */
-    public $pesoAcompanhamentoNutricional = null;
+    public $medicoes = null;
     /**
-     * @var double
+     * @var \br\gov\saude\esusab\ras\common\IvcfThrift
      */
-    public $alturaAcompanhamentoNutricional = null;
+    public $ivcf = null;
 
     public function __construct($vals = null)
     {
@@ -181,11 +183,11 @@ class FichaProcedimentoChildThrift
             if (isset($vals['cpfCidadao'])) {
                 $this->cpfCidadao = $vals['cpfCidadao'];
             }
-            if (isset($vals['pesoAcompanhamentoNutricional'])) {
-                $this->pesoAcompanhamentoNutricional = $vals['pesoAcompanhamentoNutricional'];
+            if (isset($vals['medicoes'])) {
+                $this->medicoes = $vals['medicoes'];
             }
-            if (isset($vals['alturaAcompanhamentoNutricional'])) {
-                $this->alturaAcompanhamentoNutricional = $vals['alturaAcompanhamentoNutricional'];
+            if (isset($vals['ivcf'])) {
+                $this->ivcf = $vals['ivcf'];
             }
         }
     }
@@ -295,16 +297,18 @@ class FichaProcedimentoChildThrift
                         $xfer += $input->skip($ftype);
                     }
                     break;
-                case 13:
-                    if ($ftype == TType::DOUBLE) {
-                        $xfer += $input->readDouble($this->pesoAcompanhamentoNutricional);
+                case 16:
+                    if ($ftype == TType::STRUCT) {
+                        $this->medicoes = new \br\gov\saude\esusab\ras\common\MedicoesThrift();
+                        $xfer += $this->medicoes->read($input);
                     } else {
                         $xfer += $input->skip($ftype);
                     }
                     break;
-                case 14:
-                    if ($ftype == TType::DOUBLE) {
-                        $xfer += $input->readDouble($this->alturaAcompanhamentoNutricional);
+                case 17:
+                    if ($ftype == TType::STRUCT) {
+                        $this->ivcf = new \br\gov\saude\esusab\ras\common\IvcfThrift();
+                        $xfer += $this->ivcf->read($input);
                     } else {
                         $xfer += $input->skip($ftype);
                     }
@@ -385,14 +389,20 @@ class FichaProcedimentoChildThrift
             $xfer += $output->writeString($this->cpfCidadao);
             $xfer += $output->writeFieldEnd();
         }
-        if ($this->pesoAcompanhamentoNutricional !== null) {
-            $xfer += $output->writeFieldBegin('pesoAcompanhamentoNutricional', TType::DOUBLE, 13);
-            $xfer += $output->writeDouble($this->pesoAcompanhamentoNutricional);
+        if ($this->medicoes !== null) {
+            if (!is_object($this->medicoes)) {
+                throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+            }
+            $xfer += $output->writeFieldBegin('medicoes', TType::STRUCT, 16);
+            $xfer += $this->medicoes->write($output);
             $xfer += $output->writeFieldEnd();
         }
-        if ($this->alturaAcompanhamentoNutricional !== null) {
-            $xfer += $output->writeFieldBegin('alturaAcompanhamentoNutricional', TType::DOUBLE, 14);
-            $xfer += $output->writeDouble($this->alturaAcompanhamentoNutricional);
+        if ($this->ivcf !== null) {
+            if (!is_object($this->ivcf)) {
+                throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+            }
+            $xfer += $output->writeFieldBegin('ivcf', TType::STRUCT, 17);
+            $xfer += $this->ivcf->write($output);
             $xfer += $output->writeFieldEnd();
         }
         $xfer += $output->writeFieldStop();

@@ -86,6 +86,21 @@ class MedicamentoThrift
             'isRequired' => false,
             'type' => TType::I32,
         ),
+        15 => array(
+            'var' => 'qtDoseManha',
+            'isRequired' => false,
+            'type' => TType::STRING,
+        ),
+        16 => array(
+            'var' => 'qtDoseTarde',
+            'isRequired' => false,
+            'type' => TType::STRING,
+        ),
+        17 => array(
+            'var' => 'qtDoseNoite',
+            'isRequired' => false,
+            'type' => TType::STRING,
+        ),
     );
 
     /**
@@ -140,6 +155,18 @@ class MedicamentoThrift
      * @var int
      */
     public $quantidadeReceitada = null;
+    /**
+     * @var string
+     */
+    public $qtDoseManha = null;
+    /**
+     * @var string
+     */
+    public $qtDoseTarde = null;
+    /**
+     * @var string
+     */
+    public $qtDoseNoite = null;
 
     public function __construct($vals = null)
     {
@@ -182,6 +209,15 @@ class MedicamentoThrift
             }
             if (isset($vals['quantidadeReceitada'])) {
                 $this->quantidadeReceitada = $vals['quantidadeReceitada'];
+            }
+            if (isset($vals['qtDoseManha'])) {
+                $this->qtDoseManha = $vals['qtDoseManha'];
+            }
+            if (isset($vals['qtDoseTarde'])) {
+                $this->qtDoseTarde = $vals['qtDoseTarde'];
+            }
+            if (isset($vals['qtDoseNoite'])) {
+                $this->qtDoseNoite = $vals['qtDoseNoite'];
             }
         }
     }
@@ -296,6 +332,27 @@ class MedicamentoThrift
                         $xfer += $input->skip($ftype);
                     }
                     break;
+                case 15:
+                    if ($ftype == TType::STRING) {
+                        $xfer += $input->readString($this->qtDoseManha);
+                    } else {
+                        $xfer += $input->skip($ftype);
+                    }
+                    break;
+                case 16:
+                    if ($ftype == TType::STRING) {
+                        $xfer += $input->readString($this->qtDoseTarde);
+                    } else {
+                        $xfer += $input->skip($ftype);
+                    }
+                    break;
+                case 17:
+                    if ($ftype == TType::STRING) {
+                        $xfer += $input->readString($this->qtDoseNoite);
+                    } else {
+                        $xfer += $input->skip($ftype);
+                    }
+                    break;
                 default:
                     $xfer += $input->skip($ftype);
                     break;
@@ -373,6 +430,21 @@ class MedicamentoThrift
         if ($this->quantidadeReceitada !== null) {
             $xfer += $output->writeFieldBegin('quantidadeReceitada', TType::I32, 13);
             $xfer += $output->writeI32($this->quantidadeReceitada);
+            $xfer += $output->writeFieldEnd();
+        }
+        if ($this->qtDoseManha !== null) {
+            $xfer += $output->writeFieldBegin('qtDoseManha', TType::STRING, 15);
+            $xfer += $output->writeString($this->qtDoseManha);
+            $xfer += $output->writeFieldEnd();
+        }
+        if ($this->qtDoseTarde !== null) {
+            $xfer += $output->writeFieldBegin('qtDoseTarde', TType::STRING, 16);
+            $xfer += $output->writeString($this->qtDoseTarde);
+            $xfer += $output->writeFieldEnd();
+        }
+        if ($this->qtDoseNoite !== null) {
+            $xfer += $output->writeFieldBegin('qtDoseNoite', TType::STRING, 17);
+            $xfer += $output->writeString($this->qtDoseNoite);
             $xfer += $output->writeFieldEnd();
         }
         $xfer += $output->writeFieldStop();

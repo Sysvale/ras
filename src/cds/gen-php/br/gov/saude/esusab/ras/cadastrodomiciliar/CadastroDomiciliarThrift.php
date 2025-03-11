@@ -104,11 +104,6 @@ class CadastroDomiciliarThrift
             'type' => TType::STRUCT,
             'class' => '\br\gov\saude\esusab\ras\common\UnicaLotacaoHeaderThrift',
         ),
-        16 => array(
-            'var' => 'statusGeradoAutomaticamente',
-            'isRequired' => false,
-            'type' => TType::BOOL,
-        ),
         17 => array(
             'var' => 'latitude',
             'isRequired' => false,
@@ -118,6 +113,11 @@ class CadastroDomiciliarThrift
             'var' => 'longitude',
             'isRequired' => false,
             'type' => TType::DOUBLE,
+        ),
+        20 => array(
+            'var' => 'tipoEndereco',
+            'isRequired' => false,
+            'type' => TType::I64,
         ),
     );
 
@@ -178,10 +178,6 @@ class CadastroDomiciliarThrift
      */
     public $headerTransport = null;
     /**
-     * @var bool
-     */
-    public $statusGeradoAutomaticamente = null;
-    /**
      * @var double
      */
     public $latitude = null;
@@ -189,6 +185,10 @@ class CadastroDomiciliarThrift
      * @var double
      */
     public $longitude = null;
+    /**
+     * @var int
+     */
+    public $tipoEndereco = null;
 
     public function __construct($vals = null)
     {
@@ -235,14 +235,14 @@ class CadastroDomiciliarThrift
             if (isset($vals['headerTransport'])) {
                 $this->headerTransport = $vals['headerTransport'];
             }
-            if (isset($vals['statusGeradoAutomaticamente'])) {
-                $this->statusGeradoAutomaticamente = $vals['statusGeradoAutomaticamente'];
-            }
             if (isset($vals['latitude'])) {
                 $this->latitude = $vals['latitude'];
             }
             if (isset($vals['longitude'])) {
                 $this->longitude = $vals['longitude'];
+            }
+            if (isset($vals['tipoEndereco'])) {
+                $this->tipoEndereco = $vals['tipoEndereco'];
             }
         }
     }
@@ -387,13 +387,6 @@ class CadastroDomiciliarThrift
                         $xfer += $input->skip($ftype);
                     }
                     break;
-                case 16:
-                    if ($ftype == TType::BOOL) {
-                        $xfer += $input->readBool($this->statusGeradoAutomaticamente);
-                    } else {
-                        $xfer += $input->skip($ftype);
-                    }
-                    break;
                 case 17:
                     if ($ftype == TType::DOUBLE) {
                         $xfer += $input->readDouble($this->latitude);
@@ -404,6 +397,13 @@ class CadastroDomiciliarThrift
                 case 18:
                     if ($ftype == TType::DOUBLE) {
                         $xfer += $input->readDouble($this->longitude);
+                    } else {
+                        $xfer += $input->skip($ftype);
+                    }
+                    break;
+                case 20:
+                    if ($ftype == TType::I64) {
+                        $xfer += $input->readI64($this->tipoEndereco);
                     } else {
                         $xfer += $input->skip($ftype);
                     }
@@ -518,11 +518,6 @@ class CadastroDomiciliarThrift
             $xfer += $this->headerTransport->write($output);
             $xfer += $output->writeFieldEnd();
         }
-        if ($this->statusGeradoAutomaticamente !== null) {
-            $xfer += $output->writeFieldBegin('statusGeradoAutomaticamente', TType::BOOL, 16);
-            $xfer += $output->writeBool($this->statusGeradoAutomaticamente);
-            $xfer += $output->writeFieldEnd();
-        }
         if ($this->latitude !== null) {
             $xfer += $output->writeFieldBegin('latitude', TType::DOUBLE, 17);
             $xfer += $output->writeDouble($this->latitude);
@@ -531,6 +526,11 @@ class CadastroDomiciliarThrift
         if ($this->longitude !== null) {
             $xfer += $output->writeFieldBegin('longitude', TType::DOUBLE, 18);
             $xfer += $output->writeDouble($this->longitude);
+            $xfer += $output->writeFieldEnd();
+        }
+        if ($this->tipoEndereco !== null) {
+            $xfer += $output->writeFieldBegin('tipoEndereco', TType::I64, 20);
+            $xfer += $output->writeI64($this->tipoEndereco);
             $xfer += $output->writeFieldEnd();
         }
         $xfer += $output->writeFieldStop();
