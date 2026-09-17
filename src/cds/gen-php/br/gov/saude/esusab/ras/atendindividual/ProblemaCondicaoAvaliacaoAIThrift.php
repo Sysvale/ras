@@ -116,13 +116,13 @@ class ProblemaCondicaoAvaliacaoAIThrift
                 case 1:
                     if ($ftype == TType::LST) {
                         $this->ciaps = array();
-                        $_size7 = 0;
-                        $_etype10 = 0;
-                        $xfer += $input->readListBegin($_etype10, $_size7);
-                        for ($_i11 = 0; $_i11 < $_size7; ++$_i11) {
-                            $elem12 = null;
-                            $xfer += $input->readString($elem12);
-                            $this->ciaps []= $elem12;
+                        $_size0 = 0;
+                        $_etype3 = 0;
+                        $xfer += $input->readListBegin($_etype3, $_size0);
+                        for ($_i4 = 0; $_i4 < $_size0; ++$_i4) {
+                            $elem5 = null;
+                            $xfer += $input->readString($elem5);
+                            $this->ciaps []= $elem5;
                         }
                         $xfer += $input->readListEnd();
                     } else {
@@ -177,8 +177,8 @@ class ProblemaCondicaoAvaliacaoAIThrift
             }
             $xfer += $output->writeFieldBegin('ciaps', TType::LST, 1);
             $output->writeListBegin(TType::STRING, count($this->ciaps));
-            foreach ($this->ciaps as $iter13) {
-                $xfer += $output->writeString($iter13);
+            foreach ($this->ciaps as $iter6) {
+                $xfer += $output->writeString($iter6);
             }
             $output->writeListEnd();
             $xfer += $output->writeFieldEnd();

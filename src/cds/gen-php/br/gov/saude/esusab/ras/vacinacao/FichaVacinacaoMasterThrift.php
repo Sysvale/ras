@@ -47,6 +47,11 @@ class FichaVacinacaoMasterThrift
                 'class' => '\br\gov\saude\esusab\ras\vacinacao\FichaVacinacaoChildThrift',
                 ),
         ),
+        5 => array(
+            'var' => 'uuidFichaCancelada',
+            'isRequired' => false,
+            'type' => TType::STRING,
+        ),
     );
 
     /**
@@ -65,6 +70,10 @@ class FichaVacinacaoMasterThrift
      * @var \br\gov\saude\esusab\ras\vacinacao\FichaVacinacaoChildThrift[]
      */
     public $vacinacoes = null;
+    /**
+     * @var string
+     */
+    public $uuidFichaCancelada = null;
 
     public function __construct($vals = null)
     {
@@ -80,6 +89,9 @@ class FichaVacinacaoMasterThrift
             }
             if (isset($vals['vacinacoes'])) {
                 $this->vacinacoes = $vals['vacinacoes'];
+            }
+            if (isset($vals['uuidFichaCancelada'])) {
+                $this->uuidFichaCancelada = $vals['uuidFichaCancelada'];
             }
         }
     }
@@ -142,6 +154,13 @@ class FichaVacinacaoMasterThrift
                         $xfer += $input->skip($ftype);
                     }
                     break;
+                case 5:
+                    if ($ftype == TType::STRING) {
+                        $xfer += $input->readString($this->uuidFichaCancelada);
+                    } else {
+                        $xfer += $input->skip($ftype);
+                    }
+                    break;
                 default:
                     $xfer += $input->skip($ftype);
                     break;
@@ -184,6 +203,11 @@ class FichaVacinacaoMasterThrift
                 $xfer += $iter13->write($output);
             }
             $output->writeListEnd();
+            $xfer += $output->writeFieldEnd();
+        }
+        if ($this->uuidFichaCancelada !== null) {
+            $xfer += $output->writeFieldBegin('uuidFichaCancelada', TType::STRING, 5);
+            $xfer += $output->writeString($this->uuidFichaCancelada);
             $xfer += $output->writeFieldEnd();
         }
         $xfer += $output->writeFieldStop();
