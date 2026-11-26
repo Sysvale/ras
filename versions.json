@@ -1,0 +1,79 @@
+{
+    "latest": "8.7.0",
+    "schemas": {
+        "6.3.3": {
+            "origin": "esusab-integracao",
+            "branch": "34b4baa5",
+            "sha": "34b4baa5689cf17a36a3f4d8e3f22f47e4189d35",
+            "thrift": "0.19.0"
+        },
+        "8.7.0": {
+            "origin": "esusab-integracao",
+            "branch": "9316f280",
+            "sha": "9316f280f526704891fa29104a5ea5f1314b47b4",
+            "thrift": "0.19.0"
+        },
+        "7.2.0": {
+            "origin": "esusab-integracao",
+            "branch": "563f9792",
+            "sha": "563f9792ea7c1a48794b47a169c72284fe818613",
+            "thrift": "0.19.0"
+        },
+        "7.2.2": {
+            "origin": "esusab-integracao",
+            "branch": "16ec3473",
+            "sha": "16ec3473dd0a8f02f5e2a92e7012f671eece71dd",
+            "thrift": "0.19.0"
+        },
+        "7.3.0": {
+            "origin": "esusab-integracao",
+            "branch": "7ce343ac",
+            "sha": "7ce343acbfdba0cfd94a202f7494ee70aef476a3",
+            "thrift": "0.19.0"
+        },
+        "8.4.2": {
+            "origin": "esusab-integracao",
+            "branch": "e205f2c8",
+            "sha": "e205f2c8f6d0581bf24ec7e855ceb0b0a65be63d",
+            "thrift": "0.19.0"
+        }
+    },
+    "compat": [
+        {
+            "from": "6.3.3",
+            "to": "7.1.999",
+            "schema": "6.3.3",
+            "note": "6.3.3 a 6.3.9: sem mudança estrutural no thrift"
+        },
+        {
+            "from": "7.2.0",
+            "to": "7.2.1",
+            "schema": "7.2.0",
+            "note": "OCI e exame no odonto"
+        },
+        {
+            "from": "7.2.2",
+            "to": "7.2.999",
+            "schema": "7.2.2",
+            "note": "vacinação 7.2.2 e ivcf na visita"
+        },
+        {
+            "from": "7.3.0",
+            "to": "8.3.999",
+            "schema": "7.3.0",
+            "note": "via e local de aplicação; 7.3.1 a 8.3.x sem mudança estrutural"
+        },
+        {
+            "from": "8.4.0",
+            "to": "8.4.999",
+            "schema": "8.4.2",
+            "note": "CPF com o nome stNaoPossuiCpf (dicionário 8.4.2); snapshot e205f2c8 traz também campos de versões posteriores, inofensivos na leitura por ID"
+        },
+        {
+            "from": "8.5.0",
+            "to": "8.7.999",
+            "schema": "8.7.0",
+            "note": "8.5.0 e 8.6.0 não têm snapshot no upstream; só adicionam campos, lidos pelo schema 8.7.0"
+        }
+    ]
+}

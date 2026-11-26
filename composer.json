@@ -1,6 +1,5 @@
 {
 	"name": "sysvale/ras",
-	"version": "1.6.0",
 	"description": "API RAS para exportação do SUS",
 	"keywords": [ "laravel", "sus", "esus", "ras" ],
 	"homepage": "https://github.com/Sysvale/ras",
@@ -14,12 +13,23 @@
 		"GPL-3.0"
 	],
 	"require": {
-		"php": ">=7.4"
+		"php": ">=8.1"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^9.5"
 	},
 	"autoload": {
 		"psr-4": {
 			"Thrift\\": "src/thrift",
-			"br\\": ["src/cds/gen-php/br", "src/transport/gen-php/br", "src/cidadao/gen-php/br"]
+			"Sysvale\\Ras\\": "src/"
+		},
+		"files": [
+			"src/alias.php"
+		]
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Sysvale\\Ras\\Tests\\": "tests/"
 		}
 	}
 }
