@@ -29,7 +29,9 @@ O pacote traz uma pasta e um namespace por versão do schema Thrift, para ler fi
 
 O namespace antigo `br\gov\...` continua funcionando como alias da última versão.
 
-Cada pasta foi gerada pelo compilador Thrift a partir de um commit do upstream (`esusab-integracao`), registrado em `versions.json`. O upstream não tem tags, então o commit é o que identifica a versão. Versões intermediárias usam o schema mais próximo por faixas de compatibilidade (`compat`), por exemplo 6.3.4 a 6.3.9 usam o 6.3.3, 8.4.0 a 8.4.x usam o 8.4.2 e 8.5.0 a 8.7.x usam o 8.7.0 (as versões 8.5.0 e 8.6.0 não têm snapshot no upstream e só adicionam campos).
+Cada pasta foi gerada pelo compilador Thrift a partir do `.thrift` guardado em `thrift/V<x_y_z>/` (o gerador da versão), copiado de um commit do upstream (`esusab-integracao`) registrado em `versions.json`. O upstream não tem tags, então o commit é o que identifica a versão. Versões intermediárias usam o schema mais próximo por faixas de compatibilidade (`compat`), por exemplo 6.3.4 a 6.3.9 usam o 6.3.3, 8.4.0 a 8.4.x usam o 8.4.2 e 8.5.0 a 8.7.x usam o 8.7.0 (as versões 8.5.0 e 8.6.0 não têm snapshot no upstream e só adicionam campos).
+
+O gerador da `8.7.0` tem um acréscimo que o upstream ainda não publicou: `21:optional bool stAtivo` em `CadastroDomiciliarThrift`. O campo está no dicionário de dados da 8.7.0 e no PEC 5.6.1, que o lê no ID 21 (tipo bool). Está anotado no `versions.json` (`note`). Quando o upstream publicar o campo, regere a versão com `bin/generate.sh 8.7.0 <sha>`, que substitui o `.thrift` guardado, e confira se o ID continua o 21.
 
 O snapshot `8.4.2` vem do commit `e205f2c8`, o mais próximo do dicionário da 8.4.2: ele traz também campos de versões posteriores (visita, atividade coletiva e elegibilidade), que não atrapalham a leitura porque o Thrift lê por ID. Na 8.7.0 o campo `stNaoPossuiCpf` passou a se chamar `stCidadaoNaoPossuiCpf` (mesmos IDs) nos modelos de atendimento individual, odontológico, procedimentos, zika e consumo alimentar; no cadastro individual e na vacinação o nome continua `stNaoPossuiCpf`.
 
@@ -129,7 +131,7 @@ A 2.0 é uma versão major porque muda a estrutura do pacote:
 - **As pastas `src/cds`, `src/transport` e `src/cidadao` deixaram de existir.** As classes ficam em `src/V*/br/...`, uma pasta por versão do schema. O mapeamento PSR-4 de `br\` foi removido: o nome `br\gov\...` continua funcionando por um alias (`src/alias.php`, carregado pelo autoload do Composer) que aponta para a última versão do schema, hoje a 8.7.0.
 - **A última versão mudou.** Quem usa `br\...` passa a receber as classes da 8.7.0. Para ver o que mudou de nome, ID ou tipo em relação à versão que o seu projeto usava, rode `php bin/compare-versions.php 8.4.2 8.7.0`.
 - **`atendindividual\ExameThrift` foi removida.** Use `br\gov\saude\esusab\ras\common\ExameThrift`.
-- **`bin/update_thrift_files.sh` foi substituído por `bin/generate.sh`,** que gera uma versão por vez sem sobrescrever as anteriores.
+- **`bin/update_thrift_files.sh` foi substituído por `bin/generate.sh`,** que gera uma versão por vez, a partir do `.thrift` guardado em `thrift/`, sem sobrescrever as anteriores.
 
 Projetos que declaram `^1.x` não recebem a 2.0 sozinhos. Quem só precisa ler fichas de versões diferentes passa a usar `Ras::for($versao)` ou `Ras::readTransport($bytes)`, descritos acima.
 
@@ -137,13 +139,14 @@ Projetos que declaram `^1.x` não recebem a 2.0 sozinhos. Quem só precisa ler f
 
 Requer Docker (imagem `ghcr.io/sysvale/ras/thrift:0.19.0`, construída a partir de `.docker/Dockerfile`).
 
-Cada versão é gerada isoladamente e as demais nunca são alteradas:
+Cada versão guarda o seu `.thrift` em `thrift/V<x_y_z>/layout-camada-transport`, `layout-ras` e `layout-cidadao`, sem o prefixo de namespace (o `generate.sh` o acrescenta ao compilar). Esse arquivo é o que gera a pasta `src/V<x_y_z>/`; para mudar o schema de uma versão, edite o `.thrift` e regere. Cada versão é gerada isoladamente e as demais nunca são alteradas:
 
 ``` bash
-# versão nova: informe a branch ou o sha do upstream (laboratoriobridge/esusab-integracao)
+# versão nova: informe a branch ou o sha do upstream (laboratoriobridge/esusab-integracao);
+# o .thrift é copiado para thrift/V9_0_0 e o sha é registrado no versions.json
 bin/generate.sh 9.0.0 ledi_versao_900
 
-# reproduzir uma versão já registrada (usa o sha do versions.json)
+# regerar uma versão a partir do thrift/V8_7_0 guardado (sem rede)
 bin/generate.sh 8.7.0
 
 php bin/build_versions.php              # valida o versions.json e gera src/versions.php
@@ -151,8 +154,6 @@ php bin/compare-versions.php 8.7.0 9.0.0  # o que mudou nos structs
 ```
 
 Para a versão nova virar a padrão do alias `br\`, altere `"latest"` no `versions.json` e rode `php bin/build_versions.php`. Se a versão nova não ler fichas antigas, mantenha a pasta anterior e, se for o caso, registre uma faixa em `compat`.
-
-> As pastas `V6_3_3` e `V8_4_2` foram criadas a partir das tags `v1.5.0` e `v1.6.0` com o namespace reescrito, e ainda não têm `sha` no `versions.json`. Preencha o `sha` do upstream e confirme com `bin/generate.sh` que o resultado é idêntico.
 
 ## Testes
 
