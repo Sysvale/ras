@@ -119,6 +119,11 @@ class CadastroDomiciliarThrift
             'isRequired' => false,
             'type' => TType::I64,
         ),
+        21 => array(
+            'var' => 'stAtivo',
+            'isRequired' => false,
+            'type' => TType::BOOL,
+        ),
     );
 
     /**
@@ -189,6 +194,10 @@ class CadastroDomiciliarThrift
      * @var int
      */
     public $tipoEndereco = null;
+    /**
+     * @var bool
+     */
+    public $stAtivo = null;
 
     public function __construct($vals = null)
     {
@@ -243,6 +252,9 @@ class CadastroDomiciliarThrift
             }
             if (isset($vals['tipoEndereco'])) {
                 $this->tipoEndereco = $vals['tipoEndereco'];
+            }
+            if (isset($vals['stAtivo'])) {
+                $this->stAtivo = $vals['stAtivo'];
             }
         }
     }
@@ -408,6 +420,13 @@ class CadastroDomiciliarThrift
                         $xfer += $input->skip($ftype);
                     }
                     break;
+                case 21:
+                    if ($ftype == TType::BOOL) {
+                        $xfer += $input->readBool($this->stAtivo);
+                    } else {
+                        $xfer += $input->skip($ftype);
+                    }
+                    break;
                 default:
                     $xfer += $input->skip($ftype);
                     break;
@@ -531,6 +550,11 @@ class CadastroDomiciliarThrift
         if ($this->tipoEndereco !== null) {
             $xfer += $output->writeFieldBegin('tipoEndereco', TType::I64, 20);
             $xfer += $output->writeI64($this->tipoEndereco);
+            $xfer += $output->writeFieldEnd();
+        }
+        if ($this->stAtivo !== null) {
+            $xfer += $output->writeFieldBegin('stAtivo', TType::BOOL, 21);
+            $xfer += $output->writeBool($this->stAtivo);
             $xfer += $output->writeFieldEnd();
         }
         $xfer += $output->writeFieldStop();

@@ -10,6 +10,7 @@ use Sysvale\Ras\TipoDadoSerializado;
 class SerializeTest extends TestCase
 {
     private const CONSUMO = 'br\gov\saude\esusab\ras\consumoalimentar\FichaConsumoAlimentarThrift';
+    private const DOMICILIAR = 'br\gov\saude\esusab\ras\cadastrodomiciliar\CadastroDomiciliarThrift';
     private const CADASTRO = 'br\gov\saude\esusab\ras\cadastroindividual\CadastroIndividualThrift';
 
     protected function tearDown(): void
@@ -90,6 +91,53 @@ class SerializeTest extends TestCase
         } catch (InvalidArgumentException $e) {
             $this->assertStringContainsString('FICHA_DE_CADASTRO_INDIVIDUAL', $e->getMessage());
         }
+    }
+
+    /**
+     * @dataProvider stAtivoValues
+     */
+    public function testStAtivoOfTheCadastroDomiciliarIsSerializedAtPosition21AndReadBack(bool $stAtivo)
+    {
+        $ficha = Ras::for('8.7.0')->make(self::DOMICILIAR, ['uuid' => 'u-1', 'stAtivo' => $stAtivo]);
+
+        $bytes = Ras::writeTransport(
+            $ficha,
+            TipoDadoSerializado::FICHA_DE_CADASTRO_DOMICILIAR_E_TERRITORIAL,
+            '8.7.0'
+        );
+
+        $this->assertStringContainsString("\x02\x00\x15" . chr((int) $stAtivo), $bytes);
+        $this->assertSame($stAtivo, Ras::readTransport($bytes)->conteudo()->stAtivo);
+    }
+
+    public static function stAtivoValues(): array
+    {
+        return [[true], [false]];
+    }
+
+    public function testStAtivoIsNotWrittenWhenTheCadastroDomiciliarDoesNotInformIt()
+    {
+        $ficha = Ras::for('8.7.0')->make(self::DOMICILIAR, ['uuid' => 'u-1']);
+
+        $bytes = Ras::writeTransport(
+            $ficha,
+            TipoDadoSerializado::FICHA_DE_CADASTRO_DOMICILIAR_E_TERRITORIAL,
+            '8.7.0'
+        );
+
+        $this->assertNull(Ras::readTransport($bytes)->conteudo()->stAtivo);
+    }
+
+    public function testStAtivoSentInAnOlderSchemaIsIgnoredWhenReadWithThePreviousSchema()
+    {
+        $current = Ras::for('8.7.0');
+        $previous = Ras::for('8.4.2');
+        $bytes = $current->serialize($current->make(self::DOMICILIAR, ['uuid' => 'u-1', 'stAtivo' => true]));
+
+        $reread = $previous->deserialize($bytes, self::DOMICILIAR);
+
+        $this->assertSame('u-1', $reread->uuid);
+        $this->assertFalse(property_exists($reread, 'stAtivo'));
     }
 
     public function testTypeValuesAndClassesMatchTheLediDictionary()

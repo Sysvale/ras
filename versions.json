@@ -11,7 +11,8 @@
             "origin": "esusab-integracao",
             "branch": "9316f280",
             "sha": "9316f280f526704891fa29104a5ea5f1314b47b4",
-            "thrift": "0.19.0"
+            "thrift": "0.19.0",
+            "note": "thrift/V8_7_0 acrescenta 21:optional bool stAtivo em CadastroDomiciliarThrift (campo do dicionário e do PEC 5.6.1 que o upstream ainda não publicou)"
         },
         "7.2.0": {
             "origin": "esusab-integracao",
